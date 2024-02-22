@@ -1,6 +1,6 @@
+import Login from "../components/login";
 
-
-export default function Login() {
-
+export default async function LoginComponent() {
+    return <Login/>
 
 }
