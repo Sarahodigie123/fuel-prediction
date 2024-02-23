@@ -42,7 +42,7 @@ export default function FuelQuoteForm() {
           <label htmlFor="Suggested Gallon Price:" className="font-bold">Suggested Gallon Price:</label>
           <input
             type="text"
-            value={suggestedPricePerGallon} // Set the value attribute to the constant
+            value={`$${suggestedPricePerGallon}`} // Set the value attribute to the constant
             readOnly
           />
 
