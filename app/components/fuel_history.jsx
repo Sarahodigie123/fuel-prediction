@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 
-const FuelQuoteHistory = () => {
+export default function FuelQuoteHistory() {
   const [quotes, setQuotes] = useState("");
+  const styles = {
+    center: {
+      "text-align": "center",
+      "vertical-align": "middle",
+    },
+    border: {
+      "border": "1px solid black",
+      "border-collapse": "collapse",
+    },
+  }
 
   const calculateTotalAmountDue = (gallons, pricePerGallon) => {
     return gallons * pricePerGallon;
@@ -25,11 +35,11 @@ const FuelQuoteHistory = () => {
   ];
 
   return (
-    <div>
-      <h1>Fuel Quote History</h1>
-      <table>
+    <div className="grid place-items-center h-screen shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
+      <h1 className="text-x1 font-bold my-5">Fuel Quote History</h1>
+      <table style={styles.center, styles.border}>
         <thead>
-          <tr>
+          <tr className="shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
             <th>Gallons Requested</th>
             <th>Delivery Address</th>
             <th>Delivery Date</th>
@@ -52,5 +62,3 @@ const FuelQuoteHistory = () => {
     </div>
   );
 };
-
-export default FuelQuoteHistory;
