@@ -33,14 +33,13 @@ export default function FuelQuoteHistory() {
       suggestedPricePerGallon: 2.3,
     },
   ];
-  const response = fetch('/api/fuel-quotes', {
+  const response = fetch('/api/fuel-quotes-history', {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
   });
-  const queriedQuotes = response.json();
+  const queriedQuotes = Object.keys(response);
 
   return (
     <div className="grid place-items-center h-screen shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
