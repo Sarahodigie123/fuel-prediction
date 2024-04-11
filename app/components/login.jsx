@@ -1,68 +1,95 @@
-"use client"
-import Link from "next/link";
-import { useState } from "react";
-import { loginUser } from '../lib/auth'; // Import the loginUser function
-import { useRouter } from 'next/navigation';
+"use client";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
+import Link from "next/link"; // Import Link from next/link
+import Validation from '../LoginValidation';
 
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const router = useRouter();
+function Login() {
+    const [values, setValues] = useState({
+        username: '',
+        password: ''
+    });
+    const navigate = useRouter();
+    const [errors, setErrors] = useState({});
+    const [backendError, setBackendError] = useState(null);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+    const handleInput = (event) => {
+        const { name, value } = event.target;
+        setValues(prev => ({ ...prev, [name]: value }));
+    };
 
-    if (username === 'pipefish' && password === 'lovecode12') {
-      const simulatedResponse = {
-        username: username,
-        password: password,
-        success: true,
-      };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const err = Validation(values);
+        setErrors(err);
+        if (!err.email && !err.password) {
+            axios.post('http://localhost:3306/login', values)
+                .then(res => {
+                    if (res.data.errors) {
+                        setBackendError(res.data.errors);
+                    } else {
+                        setBackendError(null);
+                        if (res.data === "Success") {
+                            navigate('/home');
+                        } else {
+                            alert("No record existed");
+                        }
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+    };
 
-      console.log(simulatedResponse);
+    useEffect(() => {
+        // Reset errors when component mounts
+        setErrors({});
+        setBackendError(null);
+    }, []);
 
-      setUsername('');
-      setPassword('');
-      router.push('/profile');
-    } else {
-      setError('Invalid username or password');
-    }
-  };
-  return (
-    <div className="grid place-items-center h-screen">
-      <div className="shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
-        <h1 className="text-l font-bold my-4">Please Login</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <input
-            onChange={(e) => setUsername(e.target.value)}
-            type="text"
-            placeholder="Username"
-          />
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder="Password"
-          />
-          <button
-            className="bg-purple-600 text-white font-bold cursor-pointer px-6 py-2 rounded-md hover:bg-purple-700"
-            type="submit"
-          >
-            Login
-          </button>
-
-          {error && (
-            <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-              {error}
-            </div>
-          )}
-          <Link href="/register">
-            <span className="text-sm mt-3 text-right cursor-pointer underline">
+    return (
+      <div className="grid place-items-center h-screen">
+            <div className="shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
+                <h2>Sign-In</h2>
+                {backendError && backendError.map(e => (
+                    <p key={e.msg} className='text-danger'>{e.msg}</p>
+                ))}
+                <form onSubmit={handleSubmit}>
+                    <div className='mb-3'>
+                        <label htmlFor="username"><strong>Username</strong></label>
+                        <input
+                            type="username"
+                            placeholder='Enter Username'
+                            name='email'
+                            value={values.username}
+                            onChange={handleInput}
+                            className='form-control rounded-0'
+                        />
+                        {errors.username && <span className='text-danger'> {errors.username}</span>}
+                    </div>
+                    <div className='mb-3'>
+                        <label htmlFor="password"><strong>Password</strong></label>
+                        <input
+                            type="password"
+                            placeholder='Enter Password'
+                            name='password'
+                            value={values.password}
+                            onChange={handleInput}
+                            className='form-control rounded-0'
+                        />
+                        {errors.password && <span className='text-danger'> {errors.password}</span>}
+                    </div>
+                    <button type='submit' className="bg-purple-600 text-white font-bold cursor-pointer px-6 py-2"> Log in</button>
+                    <p>You agree to our terms and policies</p>
+                    <Link href="/register">
+            <span className="text-sm mt-3 text-right">
               Don't have an account? Register
             </span>
           </Link>
-        </form>
-      </div>
-    </div>
-  );
+                </form>
+            </div>
+        </div>
+    );
 }
+
+export default Login;

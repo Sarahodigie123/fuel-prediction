@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function FuelQuoteHistory() {
+
+
+  
+
   const [quotes, setQuotes] = useState("");
   const styles = {
     center: {

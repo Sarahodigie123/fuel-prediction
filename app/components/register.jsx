@@ -1,76 +1,91 @@
-'use client';
+'use client'
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { registerUser, loginUser } from '../lib/auth';
-
-export default function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const router = useRouter();
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
+import axios from 'axios';
+import Validation from "../RegisterValidation";
 
 
-    if (!email || !password) {
-      setError("Please fill in both username and password.");
-      return;
-    }
+function Register() {
+    const [values, setValues] = useState({
+        name: '',
+        email: '',
+        password: ''
+    });
+    const router = useRouter(); // Change useNavigate to useRouter
+    const [errors, setErrors] = useState({});
 
-
-    const simulatedResponse = {
-      username: email,
-      password: password,
-      success: true,
+    const handleInput = (event) => {
+        const { name, value } = event.target;
+        setValues(prev => ({ ...prev, [name]: value }));
     };
 
-    console.log("Registration successful:", simulatedResponse);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const err = Validation(values);
+        setErrors(err);
+        if (!err.name && !err.email && !err.password) { // Check if all fields are valid
+            axios.post('http://localhost:3306/register', values)
+                .then(res => {
+                    router.push('/'); // Use router.push to navigate
+                })
+                .catch(err => console.log(err));
+        }
+    };
 
-
-    setEmail("");
-    setPassword("");
-
-
-    router.push("/profile"); 
-  };
-
-  return (
-    <div className="grid place-items-center h-screen">
+    return (
+      <div className="grid place-items-center h-screen">
       <div className="shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
-        <h1 className="text-xl font-bold my-4">Create an Account</h1>
-        <form className="flex flex-col gap-3">
-          <input
-            onChange={(e) => setEmail(e.target.value)}
-            type="text"
-            placeholder="Username"
-            value={email}
-          />
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder="Password"
-            value={password}
-          />
-          <button
-            className="bg-purple-600 text-white font-bold cursor-pointer px-6 py-2"
-            type="submit"
-            onClick={handleSubmit}
-          >
-            Register
-          </button>
-
-          {error && (
-            <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-              {error}
-            </div>
-          )}
-          <Link className="text-sm mt-3 text-right" href="/login">
-            Already have an account? <span className="underline">Login</span>
+                <h2>Register</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className='mb-3'>
+                        <label htmlFor="name"><strong>Name</strong></label>
+                        <input
+                            type="text"
+                            placeholder='Enter Name'
+                            name='name'
+                            value={values.name}
+                            onChange={handleInput}
+                            className='form-control rounded-0'
+                        />
+                        {errors.name && <span className='text-danger'> {errors.name}</span>}
+                    </div>
+                    <div className='mb-3'>
+                        <label htmlFor="email"><strong>Username</strong></label>
+                        <input
+                            type="username"
+                            placeholder='Enter Username'
+                            name='username'
+                            value={values.username}
+                            onChange={handleInput}
+                            className='form-control rounded-0'
+                        />
+                        {errors.email && <span className='text-danger'> {errors.username}</span>}
+                    </div>
+                    <div className='mb-3'>
+                        <label htmlFor="password"><strong>Password</strong></label>
+                        <input
+                            type="password"
+                            placeholder='Enter Password'
+                            name='password'
+                            value={values.password}
+                            onChange={handleInput}
+                            className='form-control rounded-0'
+                        />
+                        {errors.password && <span className='text-danger'> {errors.password}</span>}
+                    </div>
+                    <button type='submit'className="bg-purple-600 text-white font-bold cursor-pointer px-6 py-2"> Register</button>
+                    <p>You agree to our terms and policies</p>
+                    {/* Use Link from next/link */}
+                    <Link href="/login">
+            <span className="text-sm mt-3 text-right">
+             Already have an account? Sign In
+            </span>
           </Link>
-        </form>
-      </div>
-    </div>
-  );
+                </form>
+            </div>
+        </div>
+    ); 
 }
+
+export default Register;
