@@ -37,6 +37,13 @@ export default function FuelQuoteHistory() {
       suggestedPricePerGallon: 2.3,
     },
   ];
+  const response = fetch('/api/fuel-quotes-history', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const queriedQuotes = Object.keys(response);
 
   return (
     <div className="grid place-items-center h-screen shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
@@ -52,7 +59,7 @@ export default function FuelQuoteHistory() {
           </tr>
         </thead>
         <tbody>
-          {tempQuotes.map((quote) => (
+          {queriedQuotes.map((quote) => (
             <tr key={quote.id}>
               <td>{quote.gallonsRequested}</td>
               <td>{quote.deliveryAddress}</td>

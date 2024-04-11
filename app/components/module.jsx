@@ -1,12 +1,15 @@
-"use client";
-import Link from "next/link";
+'use client';
 import { useState } from "react";
-
-
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { gallonsRequested } from '../lib/auth';
+import { tempQuotes } from './fuel_history';
 export default function FuelQuoteForm() {
-  const gallon=2;
-  const pricegiven=15;
-  const price = gallon*pricegiven; //hard coded for now
+
+  const router = useRouter();
+  const gallon = gallonsRequested;
+  const pricegiven = 15;
+  const price = gallon * pricegiven; //hard coded for now
   const [error, setError] = useState("");
   const loginAPI = () => {
     console.log("suggested price: ", price);
@@ -29,10 +32,16 @@ export default function FuelQuoteForm() {
             value={`$${price}`} // Set the value attribute to the constant
             readOnly
           />
+          <Link href="/FuelQuoteForm">
+            <span className="text-sm mt-3 text-right cursor-pointer underline">
+              Go Back to Fuel Quote Form
+            </span>
+          </Link>
           {error && (
             <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
               {error}
             </div>
+
           )}
         </form>
       </div >
