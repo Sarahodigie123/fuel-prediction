@@ -1,5 +1,9 @@
+import ModuleComponent from "../components/module";
 
-export default function Module() {
-
-
+export default function ModulePage() {
+  return (
+    <main>
+      <ModuleComponent />
+    </main>
+  );
 }

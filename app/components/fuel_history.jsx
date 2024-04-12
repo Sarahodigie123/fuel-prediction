@@ -1,75 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+
+// Exporting tempQuotes array to be used in other components
+export const tempQuotes = [
+  {
+    id: 1,
+    gallonsRequested: 100,
+    deliveryAddress: "123 Main St, City, State",
+    deliveryDate: "2024-02-22",
+    suggestedPricePerGallon: 2.5,
+  },
+  {
+    id: 2,
+    gallonsRequested: 150,
+    deliveryAddress: "456 Elm St, City, State",
+    deliveryDate: "2024-02-25",
+    suggestedPricePerGallon: 2.3,
+  },
+];
 
 export default function FuelQuoteHistory() {
-
-
-  
-
+  // useState here is not being used - you may want to consider removing or using it properly.
   const [quotes, setQuotes] = useState("");
+  
+  // Combine your styles into a single object to apply them correctly
   const styles = {
-    center: {
-      "text-align": "center",
-      "vertical-align": "middle",
+    table: {
+      textAlign: "center",
+      border: "1px solid black",
+      borderCollapse: "collapse",
     },
-    border: {
-      "border": "1px solid black",
-      "border-collapse": "collapse",
+    th: {
+      background: "#D6D3F8", // Assuming a light purple background for the header to match border-purple-400
+      color: "black",
+      fontWeight: "bold",
+      border: "1px solid black",
     },
-  }
-
-  const calculateTotalAmountDue = (gallons, pricePerGallon) => {
-    return gallons * pricePerGallon;
+    td: {
+      border: "1px solid black",
+    }
   };
 
-  const tempQuotes = [
-    {
-      id: 1,
-      gallonsRequested: 100,
-      deliveryAddress: "123 Main St, City, State",
-      deliveryDate: "2024-02-22",
-      suggestedPricePerGallon: 2.5,
-    },
-    {
-      id: 2,
-      gallonsRequested: 150,
-      deliveryAddress: "456 Elm St, City, State",
-      deliveryDate: "2024-02-25",
-      suggestedPricePerGallon: 2.3,
-    },
-  ];
-  const response = fetch('/api/fuel-quotes-history', {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const queriedQuotes = Object.keys(response);
+  const calculateTotalAmountDue = (gallons, pricePerGallon) => {
+    return (gallons * pricePerGallon).toFixed(2); // Formatting to 2 decimal places for currency
+  };
 
   return (
-    <div className="grid place-items-center h-screen shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
-      <h1 className="text-x1 font-bold my-5">Fuel Quote History</h1>
-      <table style={styles.center, styles.border}>
-        <thead>
-          <tr className="shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
-            <th>Gallons Requested</th>
-            <th>Delivery Address</th>
-            <th>Delivery Date</th>
-            <th>Price / gallon</th>
-            <th>Total Amount Due</th>
-          </tr>
-        </thead>
-        <tbody>
-          {queriedQuotes.map((quote) => (
-            <tr key={quote.id}>
-              <td>{quote.gallonsRequested}</td>
-              <td>{quote.deliveryAddress}</td>
-              <td>{quote.deliveryDate}</td>
-              <td>{quote.suggestedPricePerGallon}</td>
-              <td>{calculateTotalAmountDue(quote.gallonsRequested, quote.suggestedPricePerGallon)}</td>
+    <div className="grid place-items-center h-screen">
+      <div className="shadow-lg p-5 rounded-lg border-t-4 border-purple-400">
+        <h1 className="text-xl font-bold my-5">Fuel Quote History</h1>
+        <table style={styles.table}>
+          <thead>
+            <tr>
+              <th style={styles.th}>Gallons Requested</th>
+              <th style={styles.th}>Delivery Address</th>
+              <th style={styles.th}>Delivery Date</th>
+              <th style={styles.th}>Price / Gallon</th>
+              <th style={styles.th}>Total Amount Due</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {tempQuotes.map((quote) => (
+              <tr key={quote.id}>
+                <td style={styles.td}>{quote.gallonsRequested}</td>
+                <td style={styles.td}>{quote.deliveryAddress}</td>
+                <td style={styles.td}>{quote.deliveryDate}</td>
+                <td style={styles.td}>${quote.suggestedPricePerGallon}</td>
+                <td style={styles.td}>${calculateTotalAmountDue(quote.gallonsRequested, quote.suggestedPricePerGallon)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
-};
+}
