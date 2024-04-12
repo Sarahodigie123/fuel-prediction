@@ -9,7 +9,7 @@ export default function FuelQuoteForm() {
   const router = useRouter(); // Now correctly imported from 'next/router'
   const [gallonsRequested, setGallonsRequested] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState(
-    tempQuotes.length > 0 ? tempQuotes[0].deliveryAddress : ''
+    tempQuotes?.length > 0 ? tempQuotes[0].deliveryAddress : ''
   );
   const [suggestedPricePerGallon] = useState(1.50); // Assuming this value is constant for demonstration
   const [deliveryDate, setDeliveryDate] = useState('');
@@ -36,7 +36,7 @@ export default function FuelQuoteForm() {
   };
 
   // Extract unique addresses from tempQuotes to populate the dropdown
-  const uniqueAddresses = Array.from(new Set(tempQuotes.map(quote => quote.deliveryAddress)));
+  const uniqueAddresses = Array.from(new Set(tempQuotes?.map(quote => quote.deliveryAddress)));
 
   return (
     <div className="grid place-items-center h-screen">
