@@ -19,8 +19,6 @@ function Validation(values) {
 
     if (!values.password.trim()) {
         errors.password = "Password should not be empty";
-    } else if (!passwordPattern.test(values.password)) {
-        errors.password = "Password must be at least 8 characters long and contain at least one digit, one lowercase letter, and one uppercase letter";
     } else {
         errors.password = "";
     }

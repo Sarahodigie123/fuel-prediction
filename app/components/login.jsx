@@ -22,24 +22,20 @@ function Login() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const err = Validation(values);
-        setErrors(err);
-        if (!err.email && !err.password) {
-            axios.post('http://localhost:3306/login', values)
-                .then(res => {
-                    if (res.data.errors) {
-                        setBackendError(res.data.errors);
-                    } else {
-                        setBackendError(null);
-                        if (res.data === "Success") {
-                            navigate('/home');
-                        } else {
-                            alert("No record existed");
-                        }
-                    }
-                })
-                .catch(err => console.log(err));
-        }
-    };
+        axios.post("http://localhost:3306/login", {
+        username: values.username,
+        password: values.password,
+
+        }).then((response) => {
+            if(response.data.message == 200){
+                useRouter('/profile')
+                console.log("H111")
+            } else{
+                setBackendError(response.data.errors); 
+        
+      }
+    })
+  }
 
     useEffect(() => {
         // Reset errors when component mounts
@@ -60,7 +56,7 @@ function Login() {
                         <input
                             type="username"
                             placeholder='Enter Username'
-                            name='email'
+                            name='username'
                             value={values.username}
                             onChange={handleInput}
                             className='form-control rounded-0'
