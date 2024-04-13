@@ -10,27 +10,30 @@ function Register() {
         username: '',
         password: ''
     });
+    const [errors, setErrors] = useState({
+        name: "",
+        username: "",
+        password: ""
+    });
+
     const router = useRouter();
     
     const handleInput = (event) => {
-        const { name, value } = event.target;
-        setValues(prev => ({ ...prev, [name]: value }));
+        setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
   
-    const handleSubmit = async () => {
-        // event.preventDefault(); 
-        try {
-            const response = await axios.post("http://localhost:3306/register", {
-                name: values.name,
-                username: values.username,
-                password: values.password,
-            });
-            console.log(response);
-        } catch (error) {
-            console.error('Error:', error);
+    const handleSubmit = async (event) => {
+       event.preventDefault();
+        if (errors.name === "" && errors.username === "" && errors.password === ""){
+            axios.post('http://localhost:3306/register', values)
+            router.push("/login")
+            .then(res => {
+                console.log(res);
+       
+            })
+            .catch(err);
         }
     };
-    
 
     return (
       <div className="grid place-items-center h-screen">
