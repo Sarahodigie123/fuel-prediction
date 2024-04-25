@@ -1,4 +1,8 @@
+"use client";
 import React, { useState } from 'react';
+//import { tempQuotes } from './fuel_history'; // Adjust this import path as necessary
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Exporting tempQuotes array to be used in other components
 export const tempQuotes = [

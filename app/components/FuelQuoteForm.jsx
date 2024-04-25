@@ -91,12 +91,20 @@ export default function FuelQuoteForm() {
             className="rounded-md"
             required
           />
-          <button
-            className="bg-purple-600 text-white font-bold cursor-pointer px-6 py-2 rounded-md hover:bg-purple-700 mt-4"
-            type="submit"
-          >
+          <Link href="/module" style={{ display: 'block', textAlign: 'center' }}>
+           <span className="bg-purple-600 text-white font-bold cursor-pointer px-9 py-2 rounded-md hover:bg-purple-700 ">
+          
+          
+            Get Quote
+            </span>
+            </Link>
+            <Link href="/fuel_history" style={{ display: 'block', textAlign: 'center' }}>
+           <span className="bg-purple-600 text-white font-bold cursor-pointer px-9 py-2 rounded-md hover:bg-purple-700 ">
+          
+          
             Submit
-          </button>
+            </span>
+            </Link>
           {error && (
             <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
               {error}
