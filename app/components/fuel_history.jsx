@@ -1,8 +1,4 @@
-"use client";
 import React, { useState } from 'react';
-//import { tempQuotes } from './fuel_history'; // Adjust this import path as necessary
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 // Exporting tempQuotes array to be used in other components
 export const tempQuotes = [
@@ -45,7 +41,26 @@ export default function FuelQuoteHistory() {
   };
 
   const calculateTotalAmountDue = (gallons, pricePerGallon) => {
-    return (gallons * pricePerGallon).toFixed(2); // Formatting to 2 decimal places for currency
+    
+  const gallonsRequested = 100;
+  const listedPrice = 1.5;
+  var location = 'TX';
+  if (location == 'TX') {
+    locationFactor = .02;
+  } else {
+    locationFactor = .04;
+  }
+  var profitFactor = .1;
+  var rateHistoryFactor = 0.1;
+  if (gallonsRequested > 1000) {
+    gallonsRequestedFactor = .02;
+  } else {
+    gallonsRequestedFactor = .03;
+  }
+  var margin = listedPrice * (locationFactor - rateHistoryFactor + gallonsRequestedFactor + profitFactor);
+  var pricegiven = pricePerGallon * margin;
+  var price = gallon * pricegiven;
+    return (price).toFixed(2); // Formatting to 2 decimal places for currency
   };
 
   return (
