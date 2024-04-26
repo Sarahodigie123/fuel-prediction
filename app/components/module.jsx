@@ -2,13 +2,31 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// import { gallonsRequested } from '../lib/auth';
+import { gallonsRequested } from '../lib/auth';
 import { tempQuotes } from './fuel_history';
 export default function FuelQuoteForm() {
 
   const router = useRouter();
   const gallon = gallonsRequested;
-  const pricegiven = 15;
+  const listedPrice = 15;
+  const location = 'TX';
+  if (location == 'TX') {
+    locationFactor = .02;
+  } else {
+    locationFactor = .04;
+  }
+  const profitFactor = .1;
+  const rateHistoryFactor = 0.1;
+  // Rate History Factor = 1% if client requested fuel before, 0% if no history (you can query fuel quote table to check if there are any rows for the client)
+  // Gallons Requested Factor = 2% if more than 1000 Gallons, 3% if less
+  if (gallonsRequested > 1000) {
+    gallonsRequestedFactor = .02;
+  } else {
+    gallonsRequestedFactor = .03;
+  }
+  const margin = listedPrice * (locationFactor - rateHistoryFactor + gallonsRequestedFactor + profitFactor);
+  // Margin =  Current Price * (Location Factor - Rate History Factor + Gallons Requested Factor + Company Profit Factor)
+  const pricegiven = 15 * margin;
   const price = gallon * pricegiven; //hard coded for now
   const [error, setError] = useState("");
   const loginAPI = () => {
