@@ -8,8 +8,8 @@ export default function FuelQuoteForm() {
 
   const router = useRouter();
   
-  const gallon = 300;
-  const listedPrice = 15;
+  const gallon = 100;
+  const listedPrice = 1.5;
   const location = 'TX';
   var locationFactor = .00;
   var gallonsRequestedFactor=.00;
@@ -29,7 +29,7 @@ export default function FuelQuoteForm() {
   }
   const margin = listedPrice * (locationFactor - rateHistoryFactor + gallonsRequestedFactor + profitFactor);
   // Margin =  Current Price * (Location Factor - Rate History Factor + Gallons Requested Factor + Company Profit Factor)
-  const pricegiven = 15 * margin;
+  const pricegiven = 1.5 * margin;
   const price = gallon * pricegiven; //hard coded for now
   const [error, setError] = useState("");
   const loginAPI = () => {
