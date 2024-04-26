@@ -41,9 +41,10 @@ export default function FuelQuoteHistory() {
   };
 
   const calculateTotalAmountDue = (gallons, pricePerGallon) => {
-    
+
   const gallonsRequested = 100;
   const listedPrice = 1.5;
+  var locationFactor = 0;
   var location = 'TX';
   if (location == 'TX') {
     locationFactor = .02;
