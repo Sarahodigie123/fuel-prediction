@@ -7,19 +7,22 @@ import { tempQuotes } from './fuel_history';
 export default function FuelQuoteForm() {
 
   const router = useRouter();
-  const gallon = gallonsRequested;
+  
+  const gallon = 300;
   const listedPrice = 15;
   const location = 'TX';
+  var locationFactor = .00;
+  var gallonsRequestedFactor=.00;
   if (location == 'TX') {
     locationFactor = .02;
   } else {
     locationFactor = .04;
   }
-  const profitFactor = .1;
-  const rateHistoryFactor = 0.1;
+  var profitFactor = .1;
+  var rateHistoryFactor = 0.1;
   // Rate History Factor = 1% if client requested fuel before, 0% if no history (you can query fuel quote table to check if there are any rows for the client)
   // Gallons Requested Factor = 2% if more than 1000 Gallons, 3% if less
-  if (gallonsRequested > 1000) {
+  if (gallon > 1000) {
     gallonsRequestedFactor = .02;
   } else {
     gallonsRequestedFactor = .03;
