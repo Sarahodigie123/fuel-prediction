@@ -26,12 +26,11 @@ function Register() {
        event.preventDefault();
         if (errors.name === "" && errors.username === "" && errors.password === ""){
             axios.post('http://localhost:3306/register', values)
-            router.push("/login")
+            router.push('/login')
             .then(res => {
                 console.log(res);
        
             })
-            .catch(err);
         }
     };
 
