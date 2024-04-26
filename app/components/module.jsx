@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { gallonsRequested } from '../lib/auth';
+import { gallonsRequested } from './FuelQuoteForm';
 import { tempQuotes } from './fuel_history';
 export default function FuelQuoteForm() {
 
